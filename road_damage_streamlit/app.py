@@ -38,6 +38,8 @@ BACKGROUND
 
     background-attachment: fixed;
 
+    overflow-x:hidden;
+
     color:white;
 }
 
@@ -47,9 +49,9 @@ MAIN CONTAINER
 
 .block-container{
 
-    max-width:1350px;
+    max-width:1400px;
 
-    padding-top:1.5rem;
+    padding-top:1rem;
 
     padding-bottom:2rem;
 }
@@ -68,12 +70,12 @@ HEADER
 
     color:white;
 
-    margin-bottom:10px;
+    margin-bottom:8px;
 
     letter-spacing:-1px;
 
     text-shadow:
-    0px 5px 20px rgba(0,0,0,0.35);
+    0px 6px 20px rgba(0,0,0,0.35);
 }
 
 .sub-title{
@@ -84,18 +86,18 @@ HEADER
 
     color:#f1f5f9;
 
-    margin-bottom:45px;
+    margin-bottom:35px;
 
     font-weight:500;
 }
 
 /* =========================================================
-GLASS CARDS
+CARDS
 ========================================================= */
 
 .card{
 
-    background:rgba(15,23,42,0.72);
+    background:rgba(15,23,42,0.74);
 
     border:1px solid rgba(255,255,255,0.08);
 
@@ -105,9 +107,9 @@ GLASS CARDS
 
     border-radius:28px;
 
-    padding:30px;
+    padding:28px;
 
-    margin-bottom:25px;
+    margin-bottom:18px;
 
     box-shadow:
     0px 10px 35px rgba(0,0,0,0.35);
@@ -119,7 +121,7 @@ GLASS CARDS
 
 .card:hover{
 
-    transform:translateY(-6px);
+    transform:translateY(-5px);
 
     box-shadow:
     0px 18px 45px rgba(0,0,0,0.45);
@@ -135,7 +137,7 @@ HEADINGS
 
     color:#7dd3fc;
 
-    margin-bottom:18px;
+    margin-bottom:16px;
 
     font-weight:800;
 }
@@ -160,13 +162,13 @@ UPLOAD BOX
 
 [data-testid="stFileUploader"]{
 
-    background:rgba(15,23,42,0.72);
+    background:rgba(15,23,42,0.74);
 
-    border:2px dashed rgba(255,255,255,0.2);
+    border:2px dashed rgba(255,255,255,0.18);
 
     border-radius:22px;
 
-    padding:22px;
+    padding:18px;
 
     transition:0.3s;
 }
@@ -176,57 +178,7 @@ UPLOAD BOX
     border:2px dashed #38bdf8;
 
     box-shadow:
-    0px 0px 20px rgba(56,189,248,0.4);
-}
-
-/* =========================================================
-BUTTONS
-========================================================= */
-
-.stButton > button{
-
-    width:100%;
-
-    height:58px;
-
-    border:none;
-
-    border-radius:18px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #0f172a,
-        #1d4ed8
-    );
-
-    color:white;
-
-    font-size:18px;
-
-    font-weight:700;
-
-    transition:0.35s ease;
-
-    box-shadow:
-    0px 6px 20px rgba(30,64,175,0.5);
-}
-
-/* Hover */
-
-.stButton > button:hover{
-
-    transform:translateY(-3px);
-
-    background:
-    linear-gradient(
-        135deg,
-        #1e3a8a,
-        #2563eb
-    );
-
-    box-shadow:
-    0px 10px 30px rgba(37,99,235,0.7);
+    0px 0px 20px rgba(56,189,248,0.35);
 }
 
 /* =========================================================
@@ -235,11 +187,11 @@ METRICS
 
 [data-testid="metric-container"]{
 
-    background:rgba(15,23,42,0.82);
+    background:rgba(15,23,42,0.88);
 
     border:1px solid rgba(255,255,255,0.08);
 
-    padding:20px;
+    padding:18px;
 
     border-radius:22px;
 
@@ -249,21 +201,21 @@ METRICS
     transition:0.3s;
 }
 
-/* Hover */
-
 [data-testid="metric-container"]:hover{
 
     transform:translateY(-4px);
 }
 
-/* Metric text */
+/* Metric labels */
 
 [data-testid="metric-container"] label{
 
     color:#cbd5e1 !important;
 
-    font-size:16px;
+    font-size:15px;
 }
+
+/* Metric values */
 
 [data-testid="metric-container"] div{
 
@@ -273,26 +225,12 @@ METRICS
 }
 
 /* =========================================================
-SIDEBAR
-========================================================= */
-
-[data-testid="stSidebar"]{
-
-    background:
-    linear-gradient(
-        180deg,
-        rgba(15,23,42,0.96),
-        rgba(30,41,59,0.96)
-    );
-}
-
-/* =========================================================
-IMAGE
+IMAGES
 ========================================================= */
 
 img{
 
-    border-radius:20px;
+    border-radius:22px;
 }
 
 /* =========================================================
@@ -315,11 +253,27 @@ FOOTER
 
     text-align:center;
 
-    margin-top:50px;
+    margin-top:35px;
 
     color:#e2e8f0;
 
     font-size:15px;
+}
+
+/* =========================================================
+SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#1e3a8a;
+
+    border-radius:20px;
 }
 
 /* =========================================================
@@ -379,13 +333,13 @@ st.markdown(
 )
 
 # ============================================================
-# TWO COLUMN LAYOUT
+# MAIN LAYOUT
 # ============================================================
 
-left_col, right_col = st.columns([1.2,1])
+left_col, right_col = st.columns([1.15,1])
 
 # ============================================================
-# LEFT SIDE
+# LEFT SECTION - ABOUT
 # ============================================================
 
 with left_col:
@@ -412,8 +366,8 @@ with left_col:
 
     <p>
     Convolutional Neural Networks (CNNs) automatically learn
-    road surface features such as cracks, potholes,
-    and texture patterns for intelligent classification.
+    road surface patterns such as potholes, cracks,
+    and texture features for intelligent classification.
     </p>
 
     <h3>Industry Applications</h3>
@@ -430,7 +384,8 @@ with left_col:
     """, unsafe_allow_html=True)
 
 # ============================================================
-# RIGHT SIDE
+# RIGHT SECTION
+# upload + prediction
 # ============================================================
 
 with right_col:
@@ -441,8 +396,7 @@ with right_col:
     <h2>Upload Road Image</h2>
 
     <p>
-    Upload a road surface image for AI-powered
-    road damage analysis.
+    Upload a road image for AI-powered road damage analysis.
     </p>
 
     </div>
@@ -453,105 +407,80 @@ with right_col:
         type=["jpg", "jpeg", "png"]
     )
 
-# ============================================================
-# PREDICTION
-# ============================================================
-
-if uploaded_file is not None:
-
-    image = Image.open(uploaded_file).convert("RGB")
-
-    # ========================================================
-    # PREPROCESS
-    # ========================================================
-
-    IMG_SIZE = 128
-
-    img = image.resize((IMG_SIZE, IMG_SIZE))
-
-    img_array = np.array(img) / 255.0
-
-    img_array = np.expand_dims(img_array, axis=0)
-
     # ========================================================
     # PREDICTION
     # ========================================================
 
-    prediction = model.predict(img_array)
+    if uploaded_file is not None:
 
-    predicted_class = np.argmax(prediction)
+        image = Image.open(uploaded_file).convert("RGB")
 
-    confidence = np.max(prediction) * 100
+        # ====================================================
+        # PREPROCESS IMAGE
+        # ====================================================
 
-    label = index_to_label[predicted_class]
+        IMG_SIZE = 128
 
-    # ========================================================
-    # SEVERITY
-    # ========================================================
+        img = image.resize((IMG_SIZE, IMG_SIZE))
 
-    label_lower = label.lower()
+        img_array = np.array(img) / 255.0
 
-    if "pothole" in label_lower:
+        img_array = np.expand_dims(img_array, axis=0)
 
-        severity = "High"
+        # ====================================================
+        # MODEL PREDICTION
+        # ====================================================
 
-        recommendation = """
-        Immediate maintenance recommended.
-        High-risk road condition detected.
-        """
+        prediction = model.predict(img_array)
 
-    elif "crack" in label_lower:
+        predicted_class = np.argmax(prediction)
 
-        severity = "Medium"
+        confidence = np.max(prediction) * 100
 
-        recommendation = """
-        Scheduled maintenance recommended.
-        Surface deterioration detected.
-        """
+        label = index_to_label[predicted_class]
 
-    else:
+        # ====================================================
+        # SEVERITY
+        # ====================================================
 
-        severity = "Low"
+        label_lower = label.lower()
 
-        recommendation = """
-        Routine inspection recommended.
-        Moderate infrastructure issue detected.
-        """
+        if "pothole" in label_lower:
 
-    # ========================================================
-    # IMAGE + RESULTS
-    # ========================================================
+            severity = "High"
 
-    st.markdown("<br>", unsafe_allow_html=True)
+            recommendation = """
+            Immediate maintenance recommended.
+            High-risk road condition detected.
+            """
 
-    img_col, result_col = st.columns([1,1])
+        elif "crack" in label_lower:
 
-    # ========================================================
-    # IMAGE COLUMN
-    # ========================================================
+            severity = "Medium"
 
-    with img_col:
+            recommendation = """
+            Scheduled maintenance recommended.
+            Surface deterioration detected.
+            """
 
-        st.markdown("""
-        <div class="card">
-        <h2>Uploaded Image Preview</h2>
-        </div>
-        """, unsafe_allow_html=True)
+        else:
 
-        st.image(
-            image,
-            use_container_width=True
-        )
+            severity = "Low"
 
-    # ========================================================
-    # RESULTS COLUMN
-    # ========================================================
+            recommendation = """
+            Routine inspection recommended.
+            Moderate infrastructure issue detected.
+            """
 
-    with result_col:
+        # ====================================================
+        # PREDICTION RESULTS
+        # ====================================================
 
         st.markdown("""
         <div class="card">
+
         <h2>Prediction Results</h2>
+
         </div>
         """, unsafe_allow_html=True)
 
@@ -572,15 +501,50 @@ if uploaded_file is not None:
             severity
         )
 
-        st.markdown("<br>", unsafe_allow_html=True)
+# ============================================================
+# SECOND ROW
+# IMAGE + GRAPH
+# ============================================================
 
-        # ====================================================
-        # VISUALIZATION
-        # ====================================================
+if uploaded_file is not None:
+
+    st.markdown(
+        "<div style='margin-top:5px'></div>",
+        unsafe_allow_html=True
+    )
+
+    row2_left, row2_right = st.columns([1,1])
+
+    # ========================================================
+    # IMAGE PREVIEW
+    # ========================================================
+
+    with row2_left:
 
         st.markdown("""
         <div class="card">
+
+        <h2>Uploaded Image Preview</h2>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.image(
+            image,
+            use_container_width=True
+        )
+
+    # ========================================================
+    # GRAPH
+    # ========================================================
+
+    with row2_right:
+
+        st.markdown("""
+        <div class="card">
+
         <h2>Class Confidence Graph</h2>
+
         </div>
         """, unsafe_allow_html=True)
 
@@ -588,18 +552,15 @@ if uploaded_file is not None:
 
         probabilities = prediction[0] * 100
 
-        fig, ax = plt.subplots(figsize=(8,4))
+        fig, ax = plt.subplots(figsize=(7,4))
 
         bars = ax.bar(
             class_names,
-            probabilities
+            probabilities,
+            color=["#38bdf8", "#818cf8", "#22c55e"]
         )
 
-        ax.set_ylabel("Confidence (%)")
-
-        ax.set_xlabel("Damage Classes")
-
-        ax.set_title("Prediction Probability Chart")
+        # Dark graph styling
 
         ax.set_facecolor("#0f172a")
 
@@ -613,9 +574,16 @@ if uploaded_file is not None:
 
         ax.title.set_color('white')
 
+        ax.set_ylabel("Confidence (%)")
+
+        ax.set_xlabel("Damage Classes")
+
+        ax.set_title("Prediction Probability Chart")
+
         st.pyplot(fig)
 
     # ========================================================
+    # FINAL ROW
     # RECOMMENDATIONS
     # ========================================================
 
@@ -624,6 +592,14 @@ if uploaded_file is not None:
 
     <h2>Maintenance Recommendations</h2>
 
+    <div style="
+        background:rgba(255,255,255,0.06);
+        padding:18px;
+        border-radius:18px;
+        margin-top:10px;
+        line-height:1.9;
+    ">
+
     <p>
     <b>Repair Priority:</b> {severity}
     </p>
@@ -631,6 +607,8 @@ if uploaded_file is not None:
     <p>
     {recommendation}
     </p>
+
+    </div>
 
     </div>
     """, unsafe_allow_html=True)
