@@ -357,7 +357,7 @@ header{
 @st.cache_resource
 def load_cnn_model():
 
-    return load_model("road_damage_model.keras")
+    return load_model("road_damage_model.h5")
 
 model = load_cnn_model()
 

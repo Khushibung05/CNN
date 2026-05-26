@@ -4,3 +4,4 @@ keras==3.3.3
 numpy
 matplotlib
 pillow
+h5py
