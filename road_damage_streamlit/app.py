@@ -159,27 +159,82 @@ TEXT
 /* =========================================================
 UPLOAD BOX
 ========================================================= */
-
 [data-testid="stFileUploader"]{
 
-    background:rgba(15,23,42,0.74);
+    background:
+    linear-gradient(
+        135deg,
+        rgba(15,23,42,0.95),
+        rgba(30,58,138,0.88)
+    );
 
-    border:2px dashed rgba(255,255,255,0.18);
+    border:2px dashed rgba(96,165,250,0.55);
 
-    border-radius:22px;
+    border-radius:24px;
 
-    padding:18px;
+    padding:22px;
 
-    transition:0.3s;
+    transition:0.35s ease;
+
+    box-shadow:
+    0px 8px 25px rgba(30,64,175,0.35);
 }
+
+/* Hover */
 
 [data-testid="stFileUploader"]:hover{
 
-    border:2px dashed #38bdf8;
+    border:2px dashed #60a5fa;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(15,23,42,1),
+        rgba(37,99,235,0.92)
+    );
 
     box-shadow:
-    0px 0px 20px rgba(56,189,248,0.35);
+    0px 0px 30px rgba(59,130,246,0.65);
+
+    transform:translateY(-2px);
 }
+/* Upload button */
+
+[data-testid="stFileUploader"] section button{
+
+    background:
+    linear-gradient(
+        135deg,
+        #1d4ed8,
+        #2563eb
+    ) !important;
+
+    color:white !important;
+
+    border:none !important;
+
+    border-radius:12px !important;
+
+    font-weight:700 !important;
+
+    transition:0.3s ease;
+}
+
+/* Upload button hover */
+
+[data-testid="stFileUploader"] section button:hover{
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    ) !important;
+
+    transform:scale(1.03);
+}
+            
+
 
 /* =========================================================
 METRICS
