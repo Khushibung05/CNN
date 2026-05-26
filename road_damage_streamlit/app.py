@@ -357,7 +357,14 @@ header{
 @st.cache_resource
 def load_cnn_model():
 
-    return load_model("road_damage_model.h5")
+    import os
+
+    MODEL_PATH = os.path.join(
+        os.path.dirname(__file__),
+        "road_damage_model.h5"
+    )
+
+    return load_model(MODEL_PATH)
 
 model = load_cnn_model()
 
