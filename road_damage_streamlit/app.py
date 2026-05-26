@@ -1,20 +1,17 @@
 import streamlit as st
-import tensorflow as tf
 import numpy as np
 import json
 from PIL import Image
 import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
 
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 # ============================================================
 # PAGE CONFIG
 # ============================================================
 
 st.set_page_config(
-    page_title="Road Damage Detection",
+    page_title="AI Road Damage Detection",
     layout="wide"
 )
 
@@ -25,163 +22,319 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* Background */
+/* =========================================================
+BACKGROUND
+========================================================= */
 
 .stApp{
-    background: linear-gradient(
+
+    background:
+    linear-gradient(
         135deg,
-        #96da52,
-        #7dd8e1,
-        #b82883
+        #8de08f 0%,
+        #77d5e7 45%,
+        #a46bd6 100%
     );
 
+    background-attachment: fixed;
+
     color:white;
 }
 
-/* Main container */
+/* =========================================================
+MAIN CONTAINER
+========================================================= */
 
 .block-container{
-    padding-top:2rem;
+
+    max-width:1350px;
+
+    padding-top:1.5rem;
+
     padding-bottom:2rem;
-    max-width:1200px;
 }
 
-/* Main title */
+/* =========================================================
+HEADER
+========================================================= */
 
 .main-title{
-    text-align:center;
-    font-size:52px;
-    font-weight:800;
-    color:white;
-    margin-bottom:10px;
-}
 
-/* Subtitle */
+    text-align:center;
+
+    font-size:64px;
+
+    font-weight:900;
+
+    color:white;
+
+    margin-bottom:10px;
+
+    letter-spacing:-1px;
+
+    text-shadow:
+    0px 5px 20px rgba(0,0,0,0.35);
+}
 
 .sub-title{
+
     text-align:center;
-    font-size:20px;
-    color:#e2e8f0;
-    margin-bottom:40px;
+
+    font-size:22px;
+
+    color:#f1f5f9;
+
+    margin-bottom:45px;
+
+    font-weight:500;
 }
 
-/* Cards */
+/* =========================================================
+GLASS CARDS
+========================================================= */
 
 .card{
-    background:rgba(17,24,39,0.82);
 
-    padding:22px;
-
-    border-radius:22px;
+    background:rgba(15,23,42,0.72);
 
     border:1px solid rgba(255,255,255,0.08);
 
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(18px);
 
-    margin-bottom:20px;
+    -webkit-backdrop-filter: blur(18px);
+
+    border-radius:28px;
+
+    padding:30px;
+
+    margin-bottom:25px;
 
     box-shadow:
-    0px 6px 20px rgba(0,0,0,0.35);
+    0px 10px 35px rgba(0,0,0,0.35);
+
+    transition:0.35s ease;
 }
 
-/* Card headings */
+/* Hover effect */
+
+.card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+    0px 18px 45px rgba(0,0,0,0.45);
+}
+
+/* =========================================================
+HEADINGS
+========================================================= */
 
 .card h1,
 .card h2,
 .card h3{
-    color:#60a5fa;
+
+    color:#7dd3fc;
+
+    margin-bottom:18px;
+
+    font-weight:800;
 }
 
-/* Sidebar */
+/* =========================================================
+TEXT
+========================================================= */
 
-[data-testid="stSidebar"]{
-    background:rgba(15,23,42,0.95);
+.card p,
+.card li{
+
+    color:#f8fafc;
+
+    font-size:16px;
+
+    line-height:1.9;
 }
 
-/* Metric containers */
+/* =========================================================
+UPLOAD BOX
+========================================================= */
 
-[data-testid="metric-container"]{
-    background:rgba(17,24,39,0.85);
+[data-testid="stFileUploader"]{
 
-    border:1px solid rgba(255,255,255,0.06);
+    background:rgba(15,23,42,0.72);
 
-    padding:20px;
+    border:2px dashed rgba(255,255,255,0.2);
 
-    border-radius:18px;
+    border-radius:22px;
+
+    padding:22px;
+
+    transition:0.3s;
+}
+
+[data-testid="stFileUploader"]:hover{
+
+    border:2px dashed #38bdf8;
 
     box-shadow:
-    0px 4px 15px rgba(0,0,0,0.3);
+    0px 0px 20px rgba(56,189,248,0.4);
 }
 
-/* Metric text */
-
-[data-testid="metric-container"] label{
-    color:#cbd5e1;
-}
-
-[data-testid="metric-container"] div{
-    color:white;
-}
-
-/* Buttons */
+/* =========================================================
+BUTTONS
+========================================================= */
 
 .stButton > button{
+
     width:100%;
 
-    height:55px;
+    height:58px;
 
     border:none;
 
-    border-radius:15px;
+    border-radius:18px;
 
-    background:linear-gradient(
-        90deg,
-        #2563eb,
-        #7c3aed
+    background:
+    linear-gradient(
+        135deg,
+        #0f172a,
+        #1d4ed8
     );
 
     color:white;
 
     font-size:18px;
 
-    font-weight:bold;
+    font-weight:700;
+
+    transition:0.35s ease;
+
+    box-shadow:
+    0px 6px 20px rgba(30,64,175,0.5);
+}
+
+/* Hover */
+
+.stButton > button:hover{
+
+    transform:translateY(-3px);
+
+    background:
+    linear-gradient(
+        135deg,
+        #1e3a8a,
+        #2563eb
+    );
+
+    box-shadow:
+    0px 10px 30px rgba(37,99,235,0.7);
+}
+
+/* =========================================================
+METRICS
+========================================================= */
+
+[data-testid="metric-container"]{
+
+    background:rgba(15,23,42,0.82);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    padding:20px;
+
+    border-radius:22px;
+
+    box-shadow:
+    0px 6px 20px rgba(0,0,0,0.35);
 
     transition:0.3s;
 }
 
-.stButton > button:hover{
-    transform:scale(1.02);
+/* Hover */
+
+[data-testid="metric-container"]:hover{
+
+    transform:translateY(-4px);
 }
 
-/* File uploader */
+/* Metric text */
 
-[data-testid="stFileUploader"]{
-    background:rgba(17,24,39,0.82);
+[data-testid="metric-container"] label{
+
+    color:#cbd5e1 !important;
+
+    font-size:16px;
+}
+
+[data-testid="metric-container"] div{
+
+    color:white !important;
+
+    font-size:28px;
+}
+
+/* =========================================================
+SIDEBAR
+========================================================= */
+
+[data-testid="stSidebar"]{
+
+    background:
+    linear-gradient(
+        180deg,
+        rgba(15,23,42,0.96),
+        rgba(30,41,59,0.96)
+    );
+}
+
+/* =========================================================
+IMAGE
+========================================================= */
+
+img{
+
+    border-radius:20px;
+}
+
+/* =========================================================
+ALERTS
+========================================================= */
+
+.stSuccess,
+.stWarning,
+.stError,
+.stInfo{
 
     border-radius:18px;
-
-    padding:10px;
 }
 
-/* Footer */
+/* =========================================================
+FOOTER
+========================================================= */
 
 .footer{
+
     text-align:center;
 
-    margin-top:40px;
+    margin-top:50px;
 
     color:#e2e8f0;
 
     font-size:15px;
 }
 
-/* Hide streamlit branding */
+/* =========================================================
+HIDE STREAMLIT
+========================================================= */
 
 footer{
     visibility:hidden;
 }
 
 #MainMenu{
+    visibility:hidden;
+}
+
+header{
     visibility:hidden;
 }
 
@@ -194,6 +347,7 @@ footer{
 
 @st.cache_resource
 def load_cnn_model():
+
     return load_model("road_damage_model.keras")
 
 model = load_cnn_model()
@@ -203,6 +357,7 @@ model = load_cnn_model()
 # ============================================================
 
 with open("label_mapping.json", "r") as f:
+
     label_mapping = json.load(f)
 
 index_to_label = {
@@ -210,282 +365,272 @@ index_to_label = {
 }
 
 # ============================================================
-# SIDEBAR
+# HEADER
 # ============================================================
 
-st.sidebar.title("Road Damage AI")
+st.markdown(
+    '<div class="main-title">AI-Based Road Damage Detection System</div>',
+    unsafe_allow_html=True
+)
 
-page = st.sidebar.radio(
-    "Navigation",
-    [
-        "Home",
-        "Dataset",
-        "CNN Architecture",
-        "Model Evaluation",
-        "Real-Time Prediction",
-        "About"
-    ]
+st.markdown(
+    '<div class="sub-title">Smart City Infrastructure Monitoring using CNN</div>',
+    unsafe_allow_html=True
 )
 
 # ============================================================
-# HOME PAGE
+# TWO COLUMN LAYOUT
 # ============================================================
 
-if page == "Home":
-
-    st.markdown(
-        '<div class="main-title">AI Powered Road Damage Detection</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="sub-title">Smart City CNN-Based Monitoring System</div>',
-        unsafe_allow_html=True
-    )
-
-    col1, col2 = st.columns([1.2,1])
-
-    with col1:
-
-        st.markdown("""
-        <div class="card">
-
-        <h2>Problem Statement</h2>
-
-        <p>
-        Manual road inspections are slow and inefficient.
-        This CNN-based system automatically detects:
-        </p>
-
-        <ul>
-            <li>Potholes</li>
-            <li>Cracks</li>
-            <li>Manholes</li>
-        </ul>
-
-        <p>
-        helping smart city authorities prioritize maintenance.
-        </p>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-
-        st.image(
-            "https://images.unsplash.com/photo-1503376780353-7e6692767b70",
-            use_container_width=True
-        )
+left_col, right_col = st.columns([1.2,1])
 
 # ============================================================
-# DATASET PAGE
+# LEFT SIDE
 # ============================================================
 
-elif page == "Dataset":
-
-    st.markdown(
-        '<div class="main-title">Dataset Understanding</div>',
-        unsafe_allow_html=True
-    )
+with left_col:
 
     st.markdown("""
     <div class="card">
 
-    <h2>Dataset Classes</h2>
+    <h2>About the Project</h2>
+
+    <p>
+    Road monitoring is extremely important for public safety,
+    smart transportation systems, and infrastructure management.
+    Delayed detection of road damage can increase:
+    </p>
 
     <ul>
-        <li>Potholes</li>
-        <li>Cracks</li>
-        <li>Manholes</li>
+        <li>Road accidents</li>
+        <li>Vehicle damage</li>
+        <li>Traffic congestion</li>
+        <li>Maintenance costs</li>
     </ul>
 
-    <h2>Preprocessing</h2>
+    <h3>Role of CNN in Computer Vision</h3>
+
+    <p>
+    Convolutional Neural Networks (CNNs) automatically learn
+    road surface features such as cracks, potholes,
+    and texture patterns for intelligent classification.
+    </p>
+
+    <h3>Industry Applications</h3>
 
     <ul>
-        <li>Image Resizing</li>
-        <li>Normalization</li>
-        <li>Train/Test Split</li>
-        <li>Label Encoding</li>
-    </ul>
-
-    <h2>Augmentation</h2>
-
-    <ul>
-        <li>Rotation</li>
-        <li>Zoom</li>
-        <li>Horizontal Flip</li>
-        <li>Brightness Adjustment</li>
+        <li>Smart City Monitoring</li>
+        <li>Road Safety Systems</li>
+        <li>Municipal Infrastructure Analysis</li>
+        <li>Autonomous Vehicle Navigation</li>
+        <li>Highway Inspection Automation</li>
     </ul>
 
     </div>
     """, unsafe_allow_html=True)
 
 # ============================================================
-# CNN PAGE
+# RIGHT SIDE
 # ============================================================
 
-elif page == "CNN Architecture":
-
-    st.markdown(
-        '<div class="main-title">CNN Architecture</div>',
-        unsafe_allow_html=True
-    )
+with right_col:
 
     st.markdown("""
     <div class="card">
 
-    <h2>Architecture Components</h2>
-
-    <ul>
-        <li>Convolution Layers</li>
-        <li>MaxPooling Layers</li>
-        <li>Dropout Layers</li>
-        <li>Dense Layers</li>
-    </ul>
+    <h2>Upload Road Image</h2>
 
     <p>
-    CNN extracts spatial features automatically
-    from road images for accurate classification.
+    Upload a road surface image for AI-powered
+    road damage analysis.
     </p>
 
     </div>
     """, unsafe_allow_html=True)
 
-# ============================================================
-# EVALUATION PAGE
-# ============================================================
-
-elif page == "Model Evaluation":
-
-    st.markdown(
-        '<div class="main-title">Model Evaluation</div>',
-        unsafe_allow_html=True
+    uploaded_file = st.file_uploader(
+        "Choose an image",
+        type=["jpg", "jpeg", "png"]
     )
 
-    col1, col2, col3, col4 = st.columns(4)
+# ============================================================
+# PREDICTION
+# ============================================================
 
-    col1.metric("Accuracy", "92%")
-    col2.metric("Precision", "91%")
-    col3.metric("Recall", "90%")
-    col4.metric("F1 Score", "90%")
+if uploaded_file is not None:
+
+    image = Image.open(uploaded_file).convert("RGB")
+
+    # ========================================================
+    # PREPROCESS
+    # ========================================================
+
+    IMG_SIZE = 128
+
+    img = image.resize((IMG_SIZE, IMG_SIZE))
+
+    img_array = np.array(img) / 255.0
+
+    img_array = np.expand_dims(img_array, axis=0)
+
+    # ========================================================
+    # PREDICTION
+    # ========================================================
+
+    prediction = model.predict(img_array)
+
+    predicted_class = np.argmax(prediction)
+
+    confidence = np.max(prediction) * 100
+
+    label = index_to_label[predicted_class]
+
+    # ========================================================
+    # SEVERITY
+    # ========================================================
+
+    label_lower = label.lower()
+
+    if "pothole" in label_lower:
+
+        severity = "High"
+
+        recommendation = """
+        Immediate maintenance recommended.
+        High-risk road condition detected.
+        """
+
+    elif "crack" in label_lower:
+
+        severity = "Medium"
+
+        recommendation = """
+        Scheduled maintenance recommended.
+        Surface deterioration detected.
+        """
+
+    else:
+
+        severity = "Low"
+
+        recommendation = """
+        Routine inspection recommended.
+        Moderate infrastructure issue detected.
+        """
+
+    # ========================================================
+    # IMAGE + RESULTS
+    # ========================================================
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    cm = np.array([
-        [45,2,1],
-        [3,40,2],
-        [1,2,44]
-    ])
+    img_col, result_col = st.columns([1,1])
 
-    fig, ax = plt.subplots(figsize=(6,5))
+    # ========================================================
+    # IMAGE COLUMN
+    # ========================================================
 
-    sns.heatmap(
-        cm,
-        annot=True,
-        fmt='d',
-        cmap='Blues',
-        xticklabels=["Pothole","Crack","Manhole"],
-        yticklabels=["Pothole","Crack","Manhole"]
-    )
+    with img_col:
 
-    st.pyplot(fig)
-
-# ============================================================
-# PREDICTION PAGE
-# ============================================================
-
-elif page == "Real-Time Prediction":
-
-    st.markdown(
-        '<div class="main-title">Real-Time Prediction</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown("""
-    <div class="card">
-    Upload a road image to detect damage category.
-    </div>
-    """, unsafe_allow_html=True)
-
-    uploaded_file = st.file_uploader(
-        "Upload Image",
-        type=["jpg","jpeg","png"]
-    )
-
-    if uploaded_file is not None:
-
-        image = Image.open(uploaded_file).convert("RGB")
+        st.markdown("""
+        <div class="card">
+        <h2>Uploaded Image Preview</h2>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.image(
             image,
-            caption="Uploaded Image",
             use_container_width=True
         )
 
-        IMG_SIZE = 128
+    # ========================================================
+    # RESULTS COLUMN
+    # ========================================================
 
-        img = image.resize((IMG_SIZE, IMG_SIZE))
+    with result_col:
 
-        img_array = np.array(img) / 255.0
+        st.markdown("""
+        <div class="card">
+        <h2>Prediction Results</h2>
+        </div>
+        """, unsafe_allow_html=True)
 
-        img_array = np.expand_dims(img_array, axis=0)
+        metric1, metric2, metric3 = st.columns(3)
 
-        prediction = model.predict(img_array)
+        metric1.metric(
+            "Prediction",
+            label
+        )
 
-        predicted_class = np.argmax(prediction)
+        metric2.metric(
+            "Confidence",
+            f"{confidence:.2f}%"
+        )
 
-        confidence = np.max(prediction)
+        metric3.metric(
+            "Severity",
+            severity
+        )
 
-        label = index_to_label[predicted_class]
+        st.markdown("<br>", unsafe_allow_html=True)
 
-        st.success(f"Prediction: {label}")
+        # ====================================================
+        # VISUALIZATION
+        # ====================================================
 
-        st.info(f"Confidence: {confidence:.2f}")
+        st.markdown("""
+        <div class="card">
+        <h2>Class Confidence Graph</h2>
+        </div>
+        """, unsafe_allow_html=True)
 
-        if "pothole" in label.lower():
+        class_names = list(index_to_label.values())
 
-            st.error("High Priority Maintenance Required")
+        probabilities = prediction[0] * 100
 
-        elif "crack" in label.lower():
+        fig, ax = plt.subplots(figsize=(8,4))
 
-            st.warning("Medium Priority Maintenance")
+        bars = ax.bar(
+            class_names,
+            probabilities
+        )
 
-        else:
+        ax.set_ylabel("Confidence (%)")
 
-            st.info("Low Priority Maintenance")
+        ax.set_xlabel("Damage Classes")
 
-# ============================================================
-# ABOUT PAGE
-# ============================================================
+        ax.set_title("Prediction Probability Chart")
 
-elif page == "About":
+        ax.set_facecolor("#0f172a")
 
-    st.markdown(
-        '<div class="main-title">About Project</div>',
-        unsafe_allow_html=True
-    )
+        fig.patch.set_facecolor("#0f172a")
 
-    st.markdown("""
+        ax.tick_params(colors='white')
+
+        ax.yaxis.label.set_color('white')
+
+        ax.xaxis.label.set_color('white')
+
+        ax.title.set_color('white')
+
+        st.pyplot(fig)
+
+    # ========================================================
+    # RECOMMENDATIONS
+    # ========================================================
+
+    st.markdown(f"""
     <div class="card">
 
-    <h2>Technologies Used</h2>
+    <h2>Maintenance Recommendations</h2>
 
-    <ul>
-        <li>Python</li>
-        <li>TensorFlow</li>
-        <li>Keras</li>
-        <li>Streamlit</li>
-        <li>CNN</li>
-    </ul>
+    <p>
+    <b>Repair Priority:</b> {severity}
+    </p>
 
-    <h2>Features</h2>
-
-    <ul>
-        <li>Road Damage Detection</li>
-        <li>Real-Time Prediction</li>
-        <li>Smart City Assistance</li>
-        <li>Automated Monitoring</li>
-    </ul>
+    <p>
+    {recommendation}
+    </p>
 
     </div>
     """, unsafe_allow_html=True)
@@ -495,6 +640,6 @@ elif page == "About":
 # ============================================================
 
 st.markdown(
-    '<div class="footer">Developed using CNN & Streamlit</div>',
+    '<div class="footer">Developed using CNN • Keras • Streamlit</div>',
     unsafe_allow_html=True
 )
